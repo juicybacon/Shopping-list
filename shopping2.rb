@@ -2,14 +2,6 @@
 #written by Jason Baker
 
 #All methods are listed below
-def construction
-	loop do
-		system "clear" or system "cls"
-		print "This part of the menu is still under construction press <ENTER> to continue: "
-		cont=gets.chomp.to_s
-		break if cont==""
-	end
-end
 
 def empty_list(empty,list)
 	if list.include?("shopping list is empty")
@@ -165,13 +157,6 @@ def delete_file(list)
 	end
 end
 
-def print_list(list)
-	system "clear" or system "cls"
-	empty=empty_list(empty,list)
-	if empty then return;end
-	construction
-end
-
 def save_list(list)
 	system "clear" or system "cls"
 
@@ -233,9 +218,8 @@ def menu(choice)
 		puts "[2] Remove items from the shopping list"
 		puts "[3] View the shopping list"
 		puts "[4] Delete the shopping list"
-		puts "[5] Print the shopping list"
-		puts "[6] Save the shopping list"
-		puts "[7] Exit"
+		puts "[5] Save the shopping list"
+		puts "[6] Exit"
 		puts ""
 		print "Please enter your selection: "
 		choice=gets.chomp.to_i
@@ -245,7 +229,6 @@ def menu(choice)
 		break if choice==4
 		break if choice==5
 		break if choice==6
-		break if choice==7
 	end
 	return choice
 end
@@ -275,11 +258,9 @@ loop do
 			view_list(list)
 		when 4 
 			delete_file(list)
-		when 5 
-			print_list(list)
-		when 6 
+		when 5
 			save_list(list)
-		when 7 
+		when 6 
 			xit=exits(xit,list)
 			if xit=="Y"
 				system "clear" or system "cls"
