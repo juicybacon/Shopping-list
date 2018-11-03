@@ -1,9 +1,9 @@
 #This is a shopping list project 
-#written by Jason Baker
-
-#All methods are listed below
+#written by Jason Baker 03/11 2018
 
 def empty_list(empty,list)
+#This is code to check to see if the shopping list is empty
+#returns empty as true if empty	
 	if list.include?("shopping list is empty")
 		puts ""
 		puts "Currently your shopping list is empty"
@@ -19,6 +19,8 @@ def empty_list(empty,list)
 end
 
 def add_shopping(list)
+#Will check to see if empty list marker is in place and will remove
+#Will check to see if item already exists before adding
 	add=""
 	system "clear" or system "cls"
 	loop do
@@ -30,15 +32,15 @@ def add_shopping(list)
 		end
 		add.strip!
 		
-		if list.include? "shopping list is empty"
-			list.delete("shopping list is empty")
+		if list.include? "shopping list is empty" 									#Checks to see if empty list marker exists
+			list.delete("shopping list is empty") 										#Removes marker and adds new item
 			list << add
 			puts "#{add} has been added"
-		elsif list.include? add
+		elsif list.include? add 																		#Check to see if item already exists
 			puts "This item is already in your shopping list"
 			puts ""
 		else
-			list << add
+			list << add 																							
 			puts "#{add} has been added"
 		end
 		list.sort!
@@ -56,6 +58,8 @@ def add_shopping(list)
 end
 
 def remove_shopping(list)
+#Checks to see if the list is empty, lists current items
+#Determine which item to remove
 	system "clear" or system "cls"
 	ans=""
 	remove_again=""
@@ -64,28 +68,9 @@ def remove_shopping(list)
 	if empty then return;end
 
 	loop do
-		print "Are you sure you want to remove an item from your shopping list (Y/N)? "
-		ans=gets.chomp.capitalize!
-		if ans != nil then ans.strip!;end
-		puts ""
-		break if ans=="Y" 
-		break if ans=="N"
-	end
-	
-	if ans=="N" then return; end
-	
-	if ans=="Y"
-		loop do
-			print "Would you like to view the shopping list (Y/N)? "
-			ans=gets.chomp.capitalize!
-			if ans != nil then ans.strip!;end
-			puts ""
-			break if ans=="Y" 
-			break if ans=="N"
-		end
-
-		if ans=="Y" then puts list; end
-
+	puts "** Your current shopping list has the below contents **"
+	puts ""	
+	puts list
 		loop do
 			puts ""
 			print "Which item would you like to remove from your shopping list: "
@@ -108,12 +93,13 @@ def remove_shopping(list)
 				break if remove_again=="Y"
 				break if remove_again=="N"
 			end
-			break if remove_again=="N"
+		if remove_again=="N" then return;end
 		end
 	end
 end
 
 def view_list(list)
+#Checks to see if list is empty and displays current list
 	system "clear" or system "cls"
 	empty=empty_list(empty,list)
 	if empty then return;end
@@ -130,6 +116,7 @@ def view_list(list)
 end
 
 def delete_file(list)
+#Checks to see if list is empty and then deletes file
 	ans=""
 	system "clear" or system "cls"
 
@@ -158,6 +145,7 @@ def delete_file(list)
 end
 
 def save_list(list)
+#Checks to see if list is empty and then saves list
 	system "clear" or system "cls"
 
 	empty=empty_list(empty,list)
@@ -173,6 +161,8 @@ def save_list(list)
 end
 
 def exits(xit,list)
+#Loads shopping file into a new array, compares to current list
+#To see if changes have been save, give options then exit
 	save=""
 	if File.file?("shopping.txt")	
 		compare=IO.readlines("shopping.txt")
@@ -210,6 +200,7 @@ def exits(xit,list)
 end
 
 def menu(choice)
+#Main menu screen
 	loop do
 		system "clear" or system"cls"
 		puts "        *MAIN MENU*"
@@ -236,6 +227,8 @@ end
 #********************************************************************
 #Core code
 system "clear" or system "cls"
+
+#Check to see if file exists and loads into list array
 list = []
 if File.file?("shopping.txt")	
 	list=IO.readlines("shopping.txt")
@@ -243,6 +236,8 @@ if File.file?("shopping.txt")
 	view_list(list)
 end
 
+#If the list array is empty add a empty marker, used to
+#call empty_list method
 if list.empty?
 	list << "shopping list is empty"
 end
