@@ -22,6 +22,7 @@ def add_shopping(list)
 #Will check to see if empty list marker is in place and will remove
 #Will check to see if item already exists before adding
 	add=""
+
 	system "clear" or system "cls"
 	loop do
 		loop do
@@ -31,7 +32,6 @@ def add_shopping(list)
 			break if add != nil
 		end
 		add.strip!
-		
 		if list.include? "shopping list is empty" 									#Checks to see if empty list marker exists
 			list.delete("shopping list is empty") 										#Removes marker and adds new item
 			list << add
@@ -44,7 +44,6 @@ def add_shopping(list)
 			puts "#{add} has been added"
 		end
 		list.sort!
-
 		loop do
 			print "Would you like to add another item (Y/N)"
 			ans=gets.chomp.capitalize!
@@ -63,10 +62,11 @@ def remove_shopping(list)
 	system "clear" or system "cls"
 	ans=""
 	remove_again=""
+	remove=""
+	remove_item=""
 	
 	empty=empty_list(empty,list)
 	if empty then return;end
-
 	loop do
 	puts "** Your current shopping list has the below contents **"
 	puts ""	
@@ -77,15 +77,24 @@ def remove_shopping(list)
 			remove_item=gets.chomp.capitalize!
 			if remove_item != nil then remove_item.strip!;end
 			puts ""
-
 			if list.include? remove_item then
-				list.delete(remove_item)
-				print "#{remove_item} has been removed from your shopping list"
+				loop do
+					print "Are you sure you want to remove #{remove_item} (Y/N)? "
+					remove=gets.chomp.capitalize!
+					if remove != nil then remove.strip!;end
+					break if remove=="Y"
+					break if remove=="N"
+				end
+				if remove=="Y"
+					list.delete(remove_item)
+					print "#{remove_item} has been removed from your shopping list"
+				else 
+					print "#{remove_item} has not been removed from your shopping list"
+				end
 			else
 				print "#{remove_item} is not in your shopping list"
 			end
 			puts ""
-
 			loop do
 				print "Would you like to remove another item (Y/N)? "
 				remove_again=gets.chomp.capitalize!
@@ -103,7 +112,6 @@ def view_list(list)
 	system "clear" or system "cls"
 	empty=empty_list(empty,list)
 	if empty then return;end
-
 	loop do
 		puts "** Your current shopping list has the below contents **"
 		puts ""
@@ -119,10 +127,8 @@ def delete_file(list)
 #Checks to see if list is empty and then deletes file
 	ans=""
 	system "clear" or system "cls"
-
 	empty=empty_list(empty,list)
 	if empty then return;end
-
 	loop do
 		print "Are you sure you want to delete your shopping list (Y/N)? "
 		ans=gets.chomp.capitalize!
@@ -147,10 +153,8 @@ end
 def save_list(list)
 #Checks to see if list is empty and then saves list
 	system "clear" or system "cls"
-
 	empty=empty_list(empty,list)
 	if empty then return;end
-	
 	File.open("shopping.txt", "w+") {|x| x << "#{list.join("\n")}"}
 	puts "Your shopping list has now been save!"
 	loop do 
@@ -168,7 +172,6 @@ def exits(xit,list)
 		compare=IO.readlines("shopping.txt")
 		compare.map{|x| x.strip!}
 	end
-
 	if list == compare
 		loop do
 			puts ""
@@ -189,7 +192,6 @@ def exits(xit,list)
 			break if save=="Y"
 			break if save=="N"
 		end
-
 		if save=="Y"
 			save_list(list)
 		else
