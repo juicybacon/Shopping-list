@@ -187,16 +187,41 @@ def save_list(list)
 	end
 end
 
-def exits(xit)
-	loop do
-		puts ""
-		print "Are you sure you want to exit (Y/N): "
-		xit=gets.chomp.capitalize!
-		if xit != nil then xit.strip;end
-		break if xit=="Y"
-		break if xit=="N"
+def exits(xit,list)
+	save=""
+	if File.file?("shopping.txt")	
+		compare=IO.readlines("shopping.txt")
+		compare.map{|x| x.strip!}
 	end
-	return xit
+
+	if list == compare
+		loop do
+			puts ""
+			print "Are you sure you want to exit (Y/N): "
+			xit=gets.chomp.capitalize!
+			if xit != nil then xit.strip;end
+			break if xit=="Y"
+			break if xit=="N"
+		end
+		return xit
+	else
+		puts ""
+		puts "Your changes to the shopping list have not been saved"
+		loop do
+			print "Would you like to save your changes (Y/N)? "
+			save=gets.chomp.capitalize!
+			if save != nil then save.strip!;end
+			break if save=="Y"
+			break if save=="N"
+		end
+
+		if save=="Y"
+			save_list(list)
+		else
+			xit="Y"
+			return xit
+		end
+	end
 end
 
 def menu(choice)
@@ -255,7 +280,7 @@ loop do
 		when 6 
 			save_list(list)
 		when 7 
-			xit=exits(xit)
+			xit=exits(xit,list)
 			if xit=="Y"
 				system "clear" or system "cls"
 				print "Thank you for using the shopping list created by Jason Baker"
