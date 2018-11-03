@@ -11,6 +11,21 @@ def construction
 	end
 end
 
+def empty_list(empty,list)
+	if list.include?("shopping list is empty")
+		puts ""
+		puts "Currently your shopping list is empty"
+		puts ""
+			loop do
+				print "Press <ENTER> to return to the main menu: "
+				ans=gets.chomp
+				break if ans==""
+			end
+		empty = true
+		return empty
+	end
+end
+
 def add_shopping(list)
 	add=""
 	system "clear" or system "cls"
@@ -34,11 +49,12 @@ def add_shopping(list)
 			list << add
 			puts "#{add} has been added"
 		end
-		
+		list.sort!
+
 		loop do
 			print "Would you like to add another item (Y/N)"
 			ans=gets.chomp.capitalize!
-			ans.strip
+			if ans != nil then ans.strip!;end
 			break if ans=="Y"
 			if ans=="N"
 				return(list)
@@ -52,10 +68,13 @@ def remove_shopping(list)
 	ans=""
 	remove_again=""
 	
+	empty=empty_list(empty,list)
+	if empty then return;end
+
 	loop do
 		print "Are you sure you want to remove an item from your shopping list (Y/N)? "
 		ans=gets.chomp.capitalize!
-		ans.strip!
+		if ans != nil then ans.strip!;end
 		puts ""
 		break if ans=="Y" 
 		break if ans=="N"
@@ -67,7 +86,7 @@ def remove_shopping(list)
 		loop do
 			print "Would you like to view the shopping list (Y/N)? "
 			ans=gets.chomp.capitalize!
-			ans.strip!
+			if ans != nil then ans.strip!;end
 			puts ""
 			break if ans=="Y" 
 			break if ans=="N"
@@ -79,7 +98,7 @@ def remove_shopping(list)
 			puts ""
 			print "Which item would you like to remove from your shopping list: "
 			remove_item=gets.chomp.capitalize!
-			remove_item.strip!
+			if remove_item != nil then remove_item.strip!;end
 			puts ""
 
 			if list.include? remove_item then
@@ -93,7 +112,7 @@ def remove_shopping(list)
 			loop do
 				print "Would you like to remove another item (Y/N)? "
 				remove_again=gets.chomp.capitalize!
-				remove_again.strip!
+				if remove_again != nil then remove_again.strip!;end
 				break if remove_again=="Y"
 				break if remove_again=="N"
 			end
@@ -103,8 +122,11 @@ def remove_shopping(list)
 end
 
 def view_list(list)
+	system "clear" or system "cls"
+	empty=empty_list(empty,list)
+	if empty then return;end
+
 	loop do
-		system "clear" or system "cls"
 		puts "** Your current shopping list has the below contents **"
 		puts ""
 		puts list
@@ -115,13 +137,17 @@ def view_list(list)
 	end
 end
 
-def delete_file
+def delete_file(list)
 	ans=""
+	system "clear" or system "cls"
+
+	empty=empty_list(empty,list)
+	if empty then return;end
+
 	loop do
-		system "clear" or system "cls"
-		print "Are you sure you want to delete your shopping list? "
+		print "Are you sure you want to delete your shopping list (Y/N)? "
 		ans=gets.chomp.capitalize!
-		ans.strip!
+		if ans != nil then ans.strip!;end
 		puts ""
 		break if ans=="Y"
 		break if ans=="N"
@@ -139,13 +165,19 @@ def delete_file
 	end
 end
 
-def print_list
+def print_list(list)
+	system "clear" or system "cls"
+	empty=empty_list(empty,list)
+	if empty then return;end
 	construction
 end
 
 def save_list(list)
 	system "clear" or system "cls"
-	list.sort!
+
+	empty=empty_list(empty,list)
+	if empty then return;end
+	
 	File.open("shopping.txt", "w+") {|x| x << "#{list.join("\n")}"}
 	puts "Your shopping list has now been save!"
 	loop do 
@@ -160,7 +192,7 @@ def exits(xit)
 		puts ""
 		print "Are you sure you want to exit (Y/N): "
 		xit=gets.chomp.capitalize!
-		xit.strip!
+		if xit != nil then xit.strip;end
 		break if xit=="Y"
 		break if xit=="N"
 	end
@@ -197,8 +229,7 @@ end
 #Core code
 system "clear" or system "cls"
 list = []
-if File.file?("shopping.txt")
-	
+if File.file?("shopping.txt")	
 	list=IO.readlines("shopping.txt")
 	list.map{|x| x.strip!}
 	view_list(list)
@@ -218,9 +249,9 @@ loop do
 		when 3 
 			view_list(list)
 		when 4 
-			delete_file
+			delete_file(list)
 		when 5 
-			print_list
+			print_list(list)
 		when 6 
 			save_list(list)
 		when 7 
