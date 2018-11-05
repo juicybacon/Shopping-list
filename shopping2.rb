@@ -140,6 +140,7 @@ def delete_file(list)
 	if ans=="Y"
 		File.delete("shopping.txt")
 		print "Your shopping list has been deleted!"
+		puts ""
 		loop do
 			print "Press <ENTER> to return to the menu"
 			ans=gets.chomp
